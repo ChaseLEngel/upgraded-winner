@@ -2,6 +2,9 @@
 
 
 # This is bad code and I am sorry
+# In order to use this script give it 2 command line arguments
+# Make sure to redirect output to the file you want
+# usage: ./script.rb [num_nodes] [num_colors] > output_file
 
 max_nodes = ARGV[0].to_i
 max_colors = ARGV[1].to_i
