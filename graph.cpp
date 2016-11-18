@@ -55,11 +55,14 @@ void Graph::eval(){
     node->setColor(color);
   }
 
-  vector<Node*> neighbors = m_adjList.find(node->getId())->second();
-  for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.begin();it++){
-    *it->crossout(color);
-    node->crossOutNeighbors(*it);
-    m_backtrack.push(node);
+  vector<Node*> neighbors = m_adjList.find(node->getId())->second;
+  for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.end();it++){
+    Node* tmp = *it;
+    if(!tmp.crossedout()){
+      tmp->addCrossedOut(color);
+      node->crossOutNeighbors(*it);
+      m_backtrack.push(node);
+    }
   }
 }
 
