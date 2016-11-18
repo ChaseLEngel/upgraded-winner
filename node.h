@@ -8,6 +8,7 @@
 
 #include<vector>
 #include<string>
+#include<algorithm>
 
 using std::string;
 using std::vector;
@@ -17,10 +18,13 @@ class Node
   public:
     Node(int num);
     ~Node();
+    int getId();
     void setColor(string value);
     string getCurColor();
     vector<string> getCrossedOut();
     void crossOutNeighbors(Node* neighbor);
+    void undoCrossedOut();
+    void freeColor(string color);
   
   private:
     int m_id;
