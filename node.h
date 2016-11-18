@@ -21,7 +21,7 @@ class Node
     string getCurColor();
     vector<string> getCrossedOut();
     void crossOutNeighbors(Node* neighbor);
-  
+    int getID() { return m_id;}
   private:
     int m_id;
     string m_curColor;
