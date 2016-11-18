@@ -9,6 +9,9 @@
 #include<vector>
 #include<string>
 
+using std::string;
+using std::vector;
+
 class Node
 {
   public:
@@ -22,4 +25,6 @@ class Node
     int id;
     string cur_color;
     vector<string> crossed_out;
-}
+};
+
+#endif
