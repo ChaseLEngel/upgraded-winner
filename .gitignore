@@ -26,3 +26,5 @@ Compiled source #
 *.log
 *.sql
 *.sqlite
+
+wumpus

@@ -11,10 +11,8 @@ Graph::Graph(){
 }
 
 void Graph::addNode(int id){
-
   Node* tmp = new Node(id);
   m_nodes.insert(make_pair(id,tmp));
-
 }
 
 void Graph::addEdge(int from, int to){
@@ -46,13 +44,27 @@ void Graph::addEdge(int from, int to){
     itt->second.push_back(fromNode);
   }
 }
-void Graph::setColors(vector<string> colors){
-  m_colors = colors; 
-}
 
 void Graph::eval(){
-  Node* tmp = findNextNode();
+  Node* node = findNextNode();
+  string color = findNextColor(node->getCrossedOut());
+  if(color == ""){
+    backTrack();
+  }
+  else{
+    node->setColor(color);
+  }
 
+  vector<Node*> neighbors = m_adjList.find(node->getId())->second();
+  for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.begin();it++){
+    *it->crossout(color);
+    node->crossOutNeighbors(*it);
+    m_backtrack.push(node);
+  }
+}
+
+void Graph::setColors(vector<string> colors){
+  m_colors = colors; 
 }
 
 Node* Graph::findNextNode(){
@@ -67,15 +79,7 @@ string Graph::findNextColor(vector<string> usedColors){
   //iterate through colors and find colors taken 
   for(vector<string>::iterator it = m_colors.begin(); it != m_colors.end(); it++){
     color = *it;
-    /*
-    if(find(usedColors.begin(), usedColors.end(), color) != usedColors.end()){
-      return color;
-    }
-    else{
-      color = "";
-    }
-  }*/
-}
+  }
   return color;
 }
 
@@ -97,7 +101,7 @@ void Graph::print()
     cout << iterator->first << " ";
   }
   cout << endl << endl;
- 
+
   cout << "Printing Edge List:" << endl; 
   typedef map<int,vector<Node*> >::iterator it;
   for(it iterator = m_adjList.begin(); iterator != m_adjList.end(); iterator++)
@@ -108,11 +112,8 @@ void Graph::print()
     int size = iterator->second.size();
     for(int i = 0; i < size; i++)
     {
-      cout << iterator->second[i]->getID() << " "; 
+      cout << iterator->second[i]->getId() << " "; 
     }
     cout << endl;
   }
-
-
-
 }
