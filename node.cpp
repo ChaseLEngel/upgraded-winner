@@ -55,3 +55,18 @@ void Node::freeColor(string color)
     m_crossedOut.erase(it);
   }
 }
+
+void Node::addCrossedOut(string color)
+{
+  m_crossedOut.push_back(color);
+}
+
+bool Node::ifCrossedOut(string color)
+{
+  vector<string>::iterator it = find(m_crossedOut.begin(), m_crossedOut.end(); color);
+  if(it != m_crossedOut.end())
+  {
+    return true;
+  }
+  return false;
+}
