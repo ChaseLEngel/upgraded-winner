@@ -108,7 +108,7 @@ void Graph::print()
     int size = iterator->second.size();
     for(int i = 0; i < size; i++)
     {
-      cout << iterator->second[i]->getID() << " "; 
+      cout << iterator->second[i]->getId() << " "; 
     }
     cout << endl;
   }
