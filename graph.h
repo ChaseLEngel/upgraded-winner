@@ -9,7 +9,7 @@ class Graph{
     void addNode(int id);
     void addEdge(int from, int to);
   private:
-    map<int, Node*> nodes;
-    map<int, vector<Node*> > adjList;
+    std::map<int, Node*> nodes;
+    std::map<int, std::vector<Node*> > adjList;
 };
 
