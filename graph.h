@@ -11,4 +11,5 @@ class Graph{
   private:
     map<int, Node*> nodes;
     map<int, vector<Node*> > adjList;
-}
+};
+
