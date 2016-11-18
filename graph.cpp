@@ -45,4 +45,33 @@ void Graph::addEdge(int from, int to){
     itt->second.push_back(fromNode);
   }
 }
+void Graph::setColors(vector<string> colors){
+  m_colors = colors; 
+}
 
+void Graph::eval(){
+  Node* tmp = findNextNode();
+
+}
+
+Node* Graph::findNextNode(){
+  return 0;
+}
+
+void Graph::backTrack(){
+}
+
+string Graph::findNextColor(vector<string> usedColors){
+  string color = "";
+  //iterate through colors and find colors taken 
+  for(vector<string>::iterator it = m_colors.begin(); it != m_colors.end(); it++){
+    color = *it;
+    if(find(usedColors.begin(), usedColors.end(), color) != usedColors.end()){
+      return color;
+    }
+    else{
+      color = "";
+    }
+  }
+  return color;
+}
