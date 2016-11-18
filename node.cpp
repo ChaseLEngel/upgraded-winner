@@ -4,6 +4,7 @@
  */
 
 #include "node.h"
+
 //Constructor
 Node::Node(int value) : m_id(value), m_curColor("Empty")
 {
@@ -12,6 +13,11 @@ Node::Node(int value) : m_id(value), m_curColor("Empty")
 Node::~Node()
 {
 
+}
+
+int Node::getId()
+{
+  return m_id;
 }
 
 void Node::setColor(string value)
@@ -31,4 +37,21 @@ vector<string> Node::getCrossedOut()
 void Node::crossOutNeighbors(Node* neighbor)
 {
   m_crossedNeighbors.push_back(neighbor);
+}
+
+void Node::undoCrossedOut()
+{
+  for(unsigned int i = 0; i < m_crossedNeighbors.size(); i++)
+  {
+    m_crossedNeighbors.at(i)->freeColor(m_curColor);
+  }
+}
+
+void Node::freeColor(string color)
+{
+  vector<string>::iterator it = find(m_crossedOut.begin(), m_crossedOut.end(), color);
+  if(it != m_crossedOut.end())
+  {
+    m_crossedOut.erase(it);
+  }
 }
