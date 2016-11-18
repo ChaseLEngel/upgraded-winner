@@ -25,6 +25,7 @@ class Node
     void crossOutNeighbors(Node* neighbor);
     void undoCrossedOut();
     void freeColor(string color);
+    void addCrossedOut(string color);
   
   private:
     int m_id;
