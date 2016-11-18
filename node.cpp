@@ -5,7 +5,7 @@
 
 #include "node.h"
 //Constructor
-Node::Node(int value) : id(value), cur_color("Empty")
+Node::Node(int value) : m_id(value), m_curColor("Empty")
 {
 }
 //Destructor
@@ -14,21 +14,21 @@ Node::~Node()
 
 }
 
-void Node::set_color(string value)
+void Node::setColor(string value)
 {
-  cur_color = value;
+  m_curColor = value;
 }
 
-string Node::get_cur_color()
+string Node::getCurColor()
 {
-  return cur_color;
+  return m_curColor;
 }
 
-vector<string> Node::get_crossed_out()
+vector<string> Node::getCrossedOut()
 {
-  return crossed_out;
+  return m_crossedOut;
 }
-void Node::cross_out_neighbors(Node* neighbor)
+void Node::crossOutNeighbors(Node* neighbor)
 {
-  crossed_neighbors.push_back(neighbor);
+  m_crossedNeighbors.push_back(neighbor);
 }
