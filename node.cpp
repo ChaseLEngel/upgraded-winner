@@ -28,3 +28,7 @@ vector<string> Node::get_crossed_out()
 {
   return crossed_out;
 }
+void Node::cross_out_neighbors(Node* neighbor)
+{
+  crossed_neighbors.push_back(neighbor);
+}
