@@ -28,7 +28,7 @@ int main(int argv, char* argc[])
   }
   
   /* Read first line, and parse colors. push into vector */
-  Graph my_graph;
+  Graph myGraph;
   vector<string> colors;
   string line;
 
@@ -40,6 +40,8 @@ int main(int argv, char* argc[])
     colors.push_back(color_value);
   } 
 
+  myGraph.setColors(colors);
+
   ist.clear();
 
   /* Read second line, parse # of Nodes in graph */
@@ -49,7 +51,7 @@ int main(int argv, char* argc[])
   ist.str(line);
   while(ist >> value)
   {
-    my_graph.addNode(atoi(value.c_str())); 
+    myGraph.addNode(atoi(value.c_str())); 
   } 
   
   ist.clear();
@@ -64,11 +66,11 @@ int main(int argv, char* argc[])
 
     ist >> from;
     ist >> to;
-    my_graph.addEdge(from,to);
+    myGraph.addEdge(from,to);
     ist.clear();
   }
 
-
+  myGraph.print();
 
   return 0;
 }

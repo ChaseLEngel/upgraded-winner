@@ -13,23 +13,23 @@ Graph::Graph(){
 void Graph::addNode(int id){
 
   Node* tmp = new Node(id);
-  nodes.insert(make_pair(id,tmp));
+  m_nodes.insert(make_pair(id,tmp));
 
 }
 
 void Graph::addEdge(int from, int to){
-  Node* fromNode = nodes.find(from)->second;
-  Node* toNode= nodes.find(from)->second;
-  map<int, vector<Node*> > :: iterator it = adjList.find(from);
-  map<int, vector<Node*> > :: iterator itt = adjList.find(to);
+  Node* fromNode = m_nodes.find(from)->second;
+  Node* toNode= m_nodes.find(from)->second;
+  map<int, vector<Node*> > :: iterator it = m_adjList.find(from);
+  map<int, vector<Node*> > :: iterator itt = m_adjList.find(to);
 
   /*if from element isn't in the list creates a vec and pushes neighbor edge 
    * onto it. Then pairs vec and element in map*/
-  if(it == adjList.end())  
+  if(it == m_adjList.end())  
   {                       
     vector<Node*> fromVec;
     fromVec.push_back(toNode);
-    adjList.insert(make_pair(from, fromVec));
+    m_adjList.insert(make_pair(from, fromVec));
   }
   /*if value is in list then new edge is added to list*/
   else{
@@ -37,10 +37,10 @@ void Graph::addEdge(int from, int to){
   }
 
   /*same proccess as above but added to the "to" element's Adj List*/
-  if(itt == adjList.end()){
+  if(itt == m_adjList.end()){
     vector<Node*> toVec;
     toVec.push_back(fromNode);
-    adjList.insert(make_pair(to, toVec));
+    m_adjList.insert(make_pair(to, toVec));
   }
   else{
     itt->second.push_back(fromNode);
@@ -67,12 +67,52 @@ string Graph::findNextColor(vector<string> usedColors){
   //iterate through colors and find colors taken 
   for(vector<string>::iterator it = m_colors.begin(); it != m_colors.end(); it++){
     color = *it;
+    /*
     if(find(usedColors.begin(), usedColors.end(), color) != usedColors.end()){
       return color;
     }
     else{
       color = "";
     }
-  }
+  }*/
+}
   return color;
+}
+
+void Graph::print()
+{
+  cout << "PRINTING GRAPH" << endl;
+  cout << "==============" << endl << endl;
+  cout << "Printing Colors:" << endl;
+  for(unsigned int i = 0; i < m_colors.size(); i++)
+  {
+    cout << m_colors[i] << " ";
+  }
+  cout << endl << endl;
+
+  cout << "Printing Node List:" << endl;
+  typedef map<int,Node*>::iterator it_type;
+  for(it_type iterator = m_nodes.begin(); iterator != m_nodes.end(); iterator++)
+  {
+    cout << iterator->first << " ";
+  }
+  cout << endl << endl;
+ 
+  cout << "Printing Edge List:" << endl; 
+  typedef map<int,vector<Node*> >::iterator it;
+  for(it iterator = m_adjList.begin(); iterator != m_adjList.end(); iterator++)
+  {
+    cout << "Node [" << iterator->first << "]" << endl; 
+    cout << "   Adjacency list: " << endl;
+    cout << "   ";
+    int size = iterator->second.size();
+    for(int i = 0; i < size; i++)
+    {
+      cout << iterator->second[i]->getID() << " "; 
+    }
+    cout << endl;
+  }
+
+
+
 }
