@@ -3,6 +3,8 @@
 using namespace std;
 
 Graph::Graph(){
+  m_accept = false;
+  m_reject = false;
 }
 
 void Graph::addNode(int id){
@@ -40,25 +42,37 @@ void Graph::addEdge(int from, int to){
   }
 }
 
-void Graph::eval(){
-  Node* node = findNextNode();
-  string color = findNextColor(node->getCrossedOut());
-  if(color == ""){
-    backTrack();
-  }
-  else{
-    node->setColor(color);
-  }
-
-  vector<Node*> neighbors = m_adjList.find(node->getId())->second;
-  for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.end();it++){
-    Node* tmp = *it;
-    if(!tmp->ifCrossedOut(color)){
-      tmp->addCrossedOut(color);
-      node->crossOutNeighbors(*it);
-      m_backtrack.push(node);
+int Graph::acceptable(){
+  for(map<int, Node*>::iterator it = m_nodes.begin(); it != m_nodes.end(); it++) {
+    if(it->second->getCurColor() == "") {
+      return false;
     }
   }
+  return true;
+}
+
+void Graph::eval(){
+  while(!m_accept || !m_reject) {
+    Node* node = findNextNode();
+    string color = findNextColor(node->getCrossedOut());
+    if(color == ""){
+      backTrack();
+    }
+    else{
+      node->setColor(color);
+    }
+
+    vector<Node*> neighbors = m_adjList.find(node->getId())->second;
+    for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.end();it++){
+      Node* tmp = *it;
+      if(!tmp->ifCrossedOut(color)){
+        tmp->addCrossedOut(color);
+        node->crossOutNeighbors(*it);
+        m_backtrack.push(node);
+      }
+    }
+  }
+  m_accept = acceptable();
 }
 
 void Graph::setColors(vector<string> colors){
@@ -83,6 +97,10 @@ void Graph::backTrack() {
   }
   else {
     node->setColor(next_color);
+  }
+  // Reject state
+  if(node->getId() == 0 && next_color == "") {
+    m_reject = true;
   }
 }
 
