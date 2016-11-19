@@ -1,9 +1,4 @@
-#include<iostream>
-#include<algorithm>
-#include<map>
-#include<vector>
 #include "graph.h"
-#include "node.h"
 
 using namespace std;
 
@@ -74,7 +69,21 @@ Node* Graph::findNextNode(){
   return 0;
 }
 
-void Graph::backTrack(){
+void Graph::backTrack() {
+  Node* node = m_backtrack.front();
+  assert(node != NULL);
+  m_backtrack.pop();
+  string cur_color = node->getCurColor();
+  node->undoCrossedOut();
+  node->setColor("");
+  string next_color = findNextColor(node->getCrossedOut());
+  // Node doesn't have any other available colors. Need to backtrack again.
+  if(next_color == "") {
+    backTrack();
+  }
+  else {
+    node->setColor(next_color);
+  }
 }
 
 string Graph::findNextColor(vector<string> usedColors){
