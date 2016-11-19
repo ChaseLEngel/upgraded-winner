@@ -2,6 +2,9 @@
 #include<map>
 #include<vector>
 #include<queue>
+#include<algorithm>
+#include<cassert>
+
 #include"node.h"
 
 class Graph{
@@ -23,4 +26,3 @@ class Graph{
     std::map<int, std::vector<Node*> > m_adjList;
     std::queue<Node*> m_backtrack;
 };
-
