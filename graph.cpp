@@ -58,7 +58,7 @@ void Graph::eval(){
   vector<Node*> neighbors = m_adjList.find(node->getId())->second;
   for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.end();it++){
     Node* tmp = *it;
-    if(!tmp.crossedout()){
+    if(!tmp->ifCrossedOut(color)){
       tmp->addCrossedOut(color);
       node->crossOutNeighbors(*it);
       m_backtrack.push(node);
