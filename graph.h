@@ -13,6 +13,7 @@ class Graph{
     void backTrack();
     void eval();
     void print();
+    std::vector<string> getColors();
     Node* findNextNode();
     std::string findNextColor(std::vector<std::string> crossedOutColors);
   
