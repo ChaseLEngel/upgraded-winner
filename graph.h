@@ -4,6 +4,7 @@
 #include<queue>
 #include<algorithm>
 #include<cassert>
+#include<climits>
 
 #include"node.h"
 
