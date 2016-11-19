@@ -19,10 +19,13 @@ class Graph{
     std::vector<string> getColors();
     Node* findNextNode();
     std::string findNextColor(std::vector<std::string> crossedOutColors);
+    int acceptable();
   
   private:
     std::vector<string> m_colors;
     std::map<int, Node*> m_nodes;
     std::map<int, std::vector<Node*> > m_adjList;
     std::queue<Node*> m_backtrack;
+    bool m_accept;
+    bool m_reject;
 };
