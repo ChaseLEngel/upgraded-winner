@@ -27,4 +27,17 @@ Compiled source #
 *.sql
 *.sqlite
 
+# Executables #
+###############
 wumpus
+graphtest
+
+# gtest files #
+###############
+*.a
+*.gcda
+*.gcno
+
+# I don't know #
+################
+*.dSYM
