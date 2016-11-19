@@ -66,7 +66,21 @@ void Graph::setColors(vector<string> colors){
 }
 
 Node* Graph::findNextNode(){
-  return 0;
+  int max = 0;
+  int idMin = 0;
+  for(map<int, Node*>::iterator it = m_nodes.begin(); it != m_nodes.end(); it++){
+    Node* tmp = it->second;
+  //find node with most crossed out neightbors
+    if(max >= tmp->crossedOutSize() && !tmp->hasColor()){
+      //if current node has equal crossed out size and its id is lower
+      //return lower id node
+      if(max == tmp->crossedOutSize() && idMin <= tmp->getId()){
+        idMin = tmp->getId();
+      }
+        max = tmp->crossedOutSize();
+    }
+  }
+  return m_nodes.find(idMin)->second;
 }
 
 void Graph::backTrack() {
