@@ -26,7 +26,9 @@ class Node
     void undoCrossedOut();
     void freeColor(string color);
     void addCrossedOut(string color);
-    bool ifCrossedOut(string color); 
+    bool ifCrossedOut(string color);
+    bool hasColor();
+    int crossedOutSize(); 
   
   private:
     int m_id;
