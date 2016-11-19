@@ -70,3 +70,20 @@ bool Node::ifCrossedOut(string color)
   }
   return false;
 }
+
+bool Node::hasColor()
+{
+  if(m_curColor == "")
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}
+
+int Node::crossedOutSize()
+{
+  return m_crossedOut.size();
+}
