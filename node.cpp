@@ -63,7 +63,7 @@ void Node::addCrossedOut(string color)
 
 bool Node::ifCrossedOut(string color)
 {
-  vector<string>::iterator it = find(m_crossedOut.begin(), m_crossedOut.end(); color);
+  vector<string>::iterator it = find(m_crossedOut.begin(), m_crossedOut.end(), color);
   if(it != m_crossedOut.end())
   {
     return true;
