@@ -120,3 +120,7 @@ void Graph::print()
     cout << endl;
   }
 }
+
+std::vector<string> Graph::getColors() {
+  return m_colors;
+}
