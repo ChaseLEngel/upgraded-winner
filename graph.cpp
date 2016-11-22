@@ -24,7 +24,7 @@ void Graph::addEdge(int from, int to){
   m_adjList[to].push_back(fromNode);
 }
 
-int Graph::acceptable(){
+bool Graph::acceptable(){
   cout << "Checking if acceptable: ";
   for(map<int, Node*>::iterator it = m_nodes.begin(); it != m_nodes.end(); it++) {
     if(it->second->getCurColor() == "") {
@@ -39,9 +39,7 @@ int Graph::acceptable(){
 void Graph::eval(){
   cout << "Starting eval" << endl;
   // Initialize first node with first color.
-  cout << "Initializing node " << m_nodes[0]->getId() << " to color " << m_colors[0] << endl;
-  m_nodes[0]->setColor(m_colors[0]);
-  while(!m_accept || !m_reject) {
+  while(!m_accept && !m_reject) {
     Node* node = findNextNode();
     assert(node != NULL);
     cout << "Next node to evaluate: " << node->getId() << endl;
@@ -64,8 +62,12 @@ void Graph::eval(){
         m_backtrack.push(node);
       }
     }
+    m_accept = acceptable();
+    // if(m_accept)
+    // {
+    //   exit(0);
+    // }
   }
-  m_accept = acceptable();
 }
 
 void Graph::setColors(vector<string> colors){
@@ -124,18 +126,36 @@ void Graph::backTrack() {
 }
 
 string Graph::findNextColor(vector<string> usedColors){
-    string color = "";
-    //iterate through colors and find colors taken 
-    for(vector<string>::iterator it = m_colors.begin(); it != m_colors.end(); it++){
-      color = *it;
-      if(find(usedColors.begin(), usedColors.end(), color) != usedColors.end()){
-        return color;
-      }
-      else{
-        color = "";
-      }
+   // cout << m_colors.size() << endl;
+   // cout << usedColors.size() << endl;
+  if(m_colors.size() == usedColors.size())
+  {
+    return ""; 
+  }
+  string chosen_color = "";
+  bool chosenFlag = true;
+  //iterate through colors and find colors taken 
+  for(auto color : m_colors){
+    // cout << color << endl;
+    for(auto usedColor : usedColors)
+    {
+      // cout << usedColor << endl;
+      if(color == usedColor)
+      {
+        chosenFlag = false;
+        break;
+      } 
     }
-    return color;
+    if(chosenFlag){
+      chosen_color = color;
+      cout << "Setting chosen color to: " << chosen_color << endl;
+      break;
+    }
+    chosenFlag = true;
+
+  }
+  // cout << "Next color = " << chosen_color << endl;
+  return chosen_color;
 }
 
 void Graph::print()

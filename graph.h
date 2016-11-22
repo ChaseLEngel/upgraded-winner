@@ -20,7 +20,7 @@ class Graph{
     std::vector<string> getColors();
     Node* findNextNode();
     std::string findNextColor(std::vector<std::string> crossedOutColors);
-    int acceptable();
+    bool acceptable();
   
   private:
     std::vector<string> m_colors;
