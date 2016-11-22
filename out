@@ -1,0 +1,42 @@
+Hello wumpus ...  tests/t01.in
+Setting colors
+Added Node: 0
+Added Node: 1
+Added Node: 2
+Added Node: 3
+Added Node: 4
+Added Node: 5
+Added Edge from 0 to 1
+Added Edge from 0 to 2
+Added Edge from 0 to 3
+Added Edge from 0 to 4
+Added Edge from 0 to 5
+Added Edge from 1 to 2
+Added Edge from 2 to 3
+Added Edge from 3 to 4
+Added Edge from 4 to 5
+Starting eval
+Next node to evaluate: 0
+Setting chosen color to: light-green
+Found next color to be: light-green
+Checking if acceptable: Nope
+Next node to evaluate: 1
+Setting chosen color to: light-grey
+Found next color to be: light-grey
+Checking if acceptable: Nope
+Next node to evaluate: 2
+Setting chosen color to: violet
+Found next color to be: violet
+Checking if acceptable: Nope
+Next node to evaluate: 3
+Setting chosen color to: light-grey
+Found next color to be: light-grey
+Checking if acceptable: Nope
+Next node to evaluate: 4
+Setting chosen color to: violet
+Found next color to be: violet
+Checking if acceptable: Nope
+Next node to evaluate: 5
+Setting chosen color to: light-grey
+Found next color to be: light-grey
+Checking if acceptable: YATZEE!
