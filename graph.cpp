@@ -79,7 +79,7 @@ Node* Graph::findNextNode(){
     Node* tmp = it->second;
     assert(tmp != NULL);
     //find node with most crossed out neightbors
-    if(max >= tmp->crossedOutSize() && !tmp->hasColor()){
+    if(max <= tmp->crossedOutSize() && !tmp->hasColor()){
       //if current node has equal crossed out size and its id is lower
       //return lower id node
       if(max == tmp->crossedOutSize() && idMin <= tmp->getId()){
