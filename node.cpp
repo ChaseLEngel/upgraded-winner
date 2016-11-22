@@ -6,7 +6,7 @@
 #include "node.h"
 
 //Constructor
-Node::Node(int value) : m_id(value), m_curColor("Empty")
+Node::Node(int value) : m_id(value), m_curColor("")
 {
 }
 //Destructor
