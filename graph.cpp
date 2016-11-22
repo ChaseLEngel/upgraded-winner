@@ -39,13 +39,12 @@ int Graph::acceptable(){
 void Graph::eval(){
   cout << "Starting eval" << endl;
   // Initialize first node with first color.
-  string color = m_colors[0];
-  m_nodes[0]->setColor(color);
   while(!m_accept || !m_reject) {
     Node* node = findNextNode();
     assert(node != NULL);
     cout << "Next node to evaluate: " << node->getId() << endl;
     string color = findNextColor(node->getCrossedOut());
+    cout << "Found next color to be: " << color << endl;
     if(color == ""){
       backTrack();
     }
@@ -73,25 +72,29 @@ void Graph::setColors(vector<string> colors){
 }
 
 Node* Graph::findNextNode(){
-  int max = INT_MIN;
-  int idMin = INT_MIN;
-  for(map<int, Node*>::iterator it = m_nodes.begin(); it != m_nodes.end(); it++){
-    Node* tmp = it->second;
-    assert(tmp != NULL);
-    //find node with most crossed out neightbors
-    if(max >= tmp->crossedOutSize() && !tmp->hasColor()){
-      //if current node has equal crossed out size and its id is lower
-      //return lower id node
-      if(max == tmp->crossedOutSize() && idMin <= tmp->getId()){
-        idMin = tmp->getId();
+  // Node that has the most crossed out colors and has minimum id.
+  Node* minNode = NULL;
+  // Keep track of minimum node's id.
+  int minId = INT_MAX;
+  // Keep track of node with max crossed out colors.
+  int maxCrossedOut = INT_MAX;
+  // For all nodes in m_nodes
+  for(auto pair : m_nodes) {
+    Node* node = pair.second;
+    assert(node != NULL);
+    // Does node have less than or equal number of crossed out colors as previous node
+    // and node has already color?
+    if(node->crossedOutSize() <= maxCrossedOut && !node->hasColor()) {
+      if(node->getId() > minId) {
+        continue;
       }
-      max = tmp->crossedOutSize();
+      minNode = node;
+      maxCrossedOut = node->crossedOutSize();
+      minId = node->getId();
     }
   }
-  cout << "Found minimum node to be node: " << idMin << endl;
-  Node* min_node = m_nodes.find(idMin)->second;
-  assert(min_node != NULL);
-  return min_node;
+  assert(minNode != NULL);
+  return minNode;
 }
 
 void Graph::backTrack() {
@@ -119,13 +122,11 @@ void Graph::backTrack() {
 }
 
 string Graph::findNextColor(vector<string> usedColors){
-  cout << "Finding next color" << endl;
   string color = "";
   //iterate through colors and find colors taken 
   for(vector<string>::iterator it = m_colors.begin(); it != m_colors.end(); it++){
     color = *it;
   }
-  cout << "Found next color to be: " << color << endl;
   return color;
 }
 
