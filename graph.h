@@ -1,7 +1,7 @@
 #include<iostream>
 #include<map>
 #include<vector>
-#include<queue>
+#include<stack>
 #include<algorithm>
 #include<cassert>
 #include<climits>
@@ -21,12 +21,11 @@ class Graph{
     Node* findNextNode();
     std::string findNextColor(std::vector<std::string> crossedOutColors);
     bool acceptable();
-  
   private:
     std::vector<string> m_colors;
     std::map<int, Node*> m_nodes;
     std::map<int, std::vector<Node*> > m_adjList;
-    std::queue<Node*> m_backtrack;
+    std::stack<Node*> m_backtrack;
     bool m_accept;
     bool m_reject;
 };

@@ -8,14 +8,12 @@ Graph::Graph(){
 }
 
 void Graph::addNode(int id){
-  cout << "Added Node: " << id << endl;
   Node* tmp = new Node(id);
   assert(tmp != NULL);
   m_nodes.insert(make_pair(id,tmp));
 }
 
 void Graph::addEdge(int from, int to){
-  cout << "Added Edge from " << from << " to " << to << endl;
   Node* fromNode = m_nodes[from];
   assert(fromNode != NULL);
   Node* toNode= m_nodes[to];
@@ -25,53 +23,47 @@ void Graph::addEdge(int from, int to){
 }
 
 bool Graph::acceptable(){
-  cout << "Checking if acceptable: ";
   for(map<int, Node*>::iterator it = m_nodes.begin(); it != m_nodes.end(); it++) {
     if(it->second->getCurColor() == "") {
-      cout << "Nope" << endl;
       return false;
     }
   }
-  cout << "YATZEE!" << endl;
   return true;
 }
 
 void Graph::eval(){
-  cout << "Starting eval" << endl;
-  // Initialize first node with first color.
   while(!m_accept && !m_reject) {
     Node* node = findNextNode();
     assert(node != NULL);
-    cout << "Next node to evaluate: " << node->getId() << endl;
     string color = findNextColor(node->getCrossedOut());
-    cout << "Found next color to be: " << color << endl;
     if(color == ""){
       backTrack();
     }
     else{
       node->setColor(color);
-    }
+      m_backtrack.push(node);
 
-    vector<Node*> neighbors = m_adjList.find(node->getId())->second;
-    for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.end();it++){
-      Node* tmp = *it;
-      assert(tmp != NULL);
-      if(!tmp->ifCrossedOut(color)){
-        tmp->addCrossedOut(color);
-        node->crossOutNeighbors(*it);
-        m_backtrack.push(node);
+      vector<Node*> neighbors = m_adjList.find(node->getId())->second;
+      for(vector<Node*>::iterator it = neighbors.begin(); it != neighbors.end();it++){
+        Node* tmp = *it;
+        assert(tmp != NULL);
+        if(!tmp->ifCrossedOut(color)){
+          tmp->addCrossedOut(color);
+          node->crossOutNeighbors(*it);
+        }
       }
     }
     m_accept = acceptable();
-    // if(m_accept)
-    // {
-    //   exit(0);
-    // }
+  }
+  if(m_accept) {
+    cout << "Accepted" << endl;
+  }
+  else {
+    cout << "Rejected" << endl;
   }
 }
 
 void Graph::setColors(vector<string> colors){
-  cout << "Setting colors" << endl;
   m_colors = colors; 
 }
 
@@ -81,15 +73,15 @@ Node* Graph::findNextNode(){
   // Keep track of minimum node's id.
   int minId = INT_MAX;
   // Keep track of node with max crossed out colors.
-  int maxCrossedOut = INT_MAX;
+  int maxCrossedOut = INT_MIN;
   // For all nodes in m_nodes
   for(auto pair : m_nodes) {
     Node* node = pair.second;
     assert(node != NULL);
     // Does node have less than or equal number of crossed out colors as previous node
     // and node has already color?
-    if(node->crossedOutSize() <= maxCrossedOut && !node->hasColor()) {
-      if(node->getId() > minId) {
+    if(node->crossedOutSize() >= maxCrossedOut && !node->hasColor()) {
+      if(node->crossedOutSize() == maxCrossedOut && node->getId() > minId) {
         continue;
       }
       minNode = node;
@@ -102,32 +94,29 @@ Node* Graph::findNextNode(){
 }
 
 void Graph::backTrack() {
-  cout << "Running backTrack" << endl;
-  Node* node = m_backtrack.front();
-  cout << "Backtracking to node: " << node->getId() << endl;
+  Node* node = m_backtrack.top();
   assert(node != NULL);
   m_backtrack.pop();
   string cur_color = node->getCurColor();
   node->undoCrossedOut();
   node->setColor("");
   string next_color = findNextColor(node->getCrossedOut());
+  // Reject state
+  if(node->getId() == 0 && next_color == cur_color) {
+    m_reject = true;
+    return;
+  }
   // Node doesn't have any other available colors. Need to backtrack again.
-  if(next_color == "") {
+  if(next_color == "" || next_color == cur_color) {
     backTrack();
   }
   else {
     node->setColor(next_color);
-  }
-  // Reject state
-  if(node->getId() == 0 && next_color == "") {
-    cout << "Reject is true" << endl;
-    m_reject = true;
+    m_backtrack.push(node);
   }
 }
 
 string Graph::findNextColor(vector<string> usedColors){
-   // cout << m_colors.size() << endl;
-   // cout << usedColors.size() << endl;
   if(m_colors.size() == usedColors.size())
   {
     return ""; 
@@ -136,10 +125,8 @@ string Graph::findNextColor(vector<string> usedColors){
   bool chosenFlag = true;
   //iterate through colors and find colors taken 
   for(auto color : m_colors){
-    // cout << color << endl;
     for(auto usedColor : usedColors)
     {
-      // cout << usedColor << endl;
       if(color == usedColor)
       {
         chosenFlag = false;
@@ -148,13 +135,11 @@ string Graph::findNextColor(vector<string> usedColors){
     }
     if(chosenFlag){
       chosen_color = color;
-      cout << "Setting chosen color to: " << chosen_color << endl;
       break;
     }
     chosenFlag = true;
 
   }
-  // cout << "Next color = " << chosen_color << endl;
   return chosen_color;
 }
 
