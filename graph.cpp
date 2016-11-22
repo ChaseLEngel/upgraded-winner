@@ -57,6 +57,7 @@ void Graph::eval(){
   }
   if(m_accept) {
     cout << "Accepted" << endl;
+    //printAssignedColors()
   }
   else {
     cout << "Rejected" << endl;
@@ -141,6 +142,12 @@ string Graph::findNextColor(vector<string> usedColors){
 
   }
   return chosen_color;
+}
+
+void Graph::printAssignedColors() {
+  for(auto node : m_nodes) {
+    cout << "Node " << node.second->getId() << ": " << node.second->getCurColor() << endl;
+  }
 }
 
 void Graph::print()
