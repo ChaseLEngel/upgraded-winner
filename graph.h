@@ -13,14 +13,19 @@ class Graph{
     Graph();
     void addNode(int id);
     void addEdge(int from, int to);
+    // Initialize all possible colors for nodes.
     void setColors(std::vector<string>);
     void backTrack();
+    // Start algorithm
     void eval();
     void print();
     void printAssignedColors();
     std::vector<string> getColors();
+    // Finds node with most crossed out colors.
     Node* findNextNode();
+    // Finds next possible color node.
     std::string findNextColor(std::vector<std::string> crossedOutColors);
+    // Check if all nodes have color.
     bool acceptable();
   private:
     std::vector<string> m_colors;

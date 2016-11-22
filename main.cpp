@@ -17,7 +17,6 @@ int main(int argv, char* argc[])
   }
 
   char* input_file = argc[1];
-  cout << "Hello wumpus ...  " << input_file << endl;
 
   ifstream inf;
   inf.open(input_file);
@@ -71,7 +70,6 @@ int main(int argv, char* argc[])
   }
 
   myGraph.eval();
-  myGraph.printAssignedColors();
 
   return 0;
 }
