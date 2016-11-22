@@ -71,6 +71,7 @@ int main(int argv, char* argc[])
   }
 
   myGraph.print();
+  myGraph.eval();
 
   return 0;
 }
