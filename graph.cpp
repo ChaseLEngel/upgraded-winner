@@ -39,6 +39,8 @@ int Graph::acceptable(){
 void Graph::eval(){
   cout << "Starting eval" << endl;
   // Initialize first node with first color.
+  cout << "Initializing node " << m_nodes[0]->getId() << " to color " << m_colors[0] << endl;
+  m_nodes[0]->setColor(m_colors[0]);
   while(!m_accept || !m_reject) {
     Node* node = findNextNode();
     assert(node != NULL);
