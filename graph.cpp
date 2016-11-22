@@ -122,12 +122,18 @@ void Graph::backTrack() {
 }
 
 string Graph::findNextColor(vector<string> usedColors){
-  string color = "";
-  //iterate through colors and find colors taken 
-  for(vector<string>::iterator it = m_colors.begin(); it != m_colors.end(); it++){
-    color = *it;
-  }
-  return color;
+    string color = "";
+    //iterate through colors and find colors taken 
+    for(vector<string>::iterator it = m_colors.begin(); it != m_colors.end(); it++){
+      color = *it;
+      if(find(usedColors.begin(), usedColors.end(), color) != usedColors.end()){
+        return color;
+      }
+      else{
+        color = "";
+      }
+    }
+    return color;
 }
 
 void Graph::print()
