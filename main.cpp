@@ -70,7 +70,6 @@ int main(int argv, char* argc[])
     ist.clear();
   }
 
-  myGraph.print();
   myGraph.eval();
 
   return 0;
