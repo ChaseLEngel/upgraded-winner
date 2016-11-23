@@ -1,0 +1,45 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    atk (3.1.0)
+      glib2 (= 3.1.0)
+    cairo (1.15.3)
+      pkg-config (>= 1.1.5)
+    cairo-gobject (3.1.0)
+      cairo
+      glib2 (= 3.1.0)
+    gdk3 (3.1.0)
+      cairo-gobject (= 3.1.0)
+      gdk_pixbuf2 (= 3.1.0)
+      gobject-introspection (= 3.1.0)
+      pango (= 3.1.0)
+    gdk_pixbuf2 (3.1.0)
+      gio2 (= 3.1.0)
+    gio2 (3.1.0)
+      glib2 (= 3.1.0)
+      gobject-introspection (= 3.1.0)
+    glib2 (3.1.0)
+      pkg-config
+    gobject-introspection (3.1.0)
+      glib2 (= 3.1.0)
+    gtk3 (3.1.0)
+      atk (= 3.1.0)
+      gdk3 (= 3.1.0)
+      gdk_pixbuf2 (= 3.1.0)
+      gio2 (= 3.1.0)
+      glib2 (= 3.1.0)
+      gobject-introspection (= 3.1.0)
+      pango (= 3.1.0)
+    pango (3.1.0)
+      cairo (>= 1.14.0)
+      glib2 (= 3.1.0)
+    pkg-config (1.1.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gtk3
+
+BUNDLED WITH
+   1.12.5
