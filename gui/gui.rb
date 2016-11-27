@@ -1,11 +1,8 @@
 #!/usr/bin/ruby
 require 'gtk3'
-require 'pp'
 
-WIN_X = 1000
-WIN_Y = 1000
-
-nodes = []
+WIN_X = 700
+WIN_Y = 400
 
 positions = [
   {x: 30, y: 30},
@@ -16,6 +13,7 @@ positions = [
   {x: 200, y: 160},
 ]
 
+# Holds node information parsed from input file.
 class Node
   attr_accessor :color, :id, :edges, :x, :y
   def initialize(id, x, y)
@@ -30,8 +28,9 @@ class Node
   end
 end
 
+# Parse input file
+nodes = []
 ntag, etag, rtag = false
-node_count = 0
 File.foreach(ARGV.first) do |line|
   if line.match('#nodes')
     ntag = true
@@ -49,9 +48,8 @@ File.foreach(ARGV.first) do |line|
 
   if ntag
     next if line == "#nodes\n"
-    #nodes << Node.new(line.chomp, positions[node_count][:x], positions[node_count][:y])
+    # Create node with random x/y position.
     nodes << Node.new(line.chomp, rand(WIN_X-30), rand(WIN_Y-30))
-    node_count = node_count+1
   elsif etag
     next if line == "#edges\n"
     from = line.split[0]
@@ -90,15 +88,20 @@ draw_window.signal_connect('draw') do
 
   # Draw nodes and edges
   nodes.each do |n|
+    # Set circle color.
     color = Cairo::Color.parse(Object.const_get("Cairo::Color::#{n.color}"))
     @cr.set_source_rgb(color.red, color.green, color.blue)
+    # Draw circle
     @cr.arc n.x, n.y, 20, 0, 2*Math::PI
+    # Color circle
     @cr.fill
     @cr.move_to n.x, n.y
     color = Cairo::Color.parse(Cairo::Color::BLACK)
     @cr.set_source_rgb(color.red, color.green, color.blue)
+    # Draw node id
     @cr.show_text n.id
     @cr.stroke
+    # Draw lines to other nodes.
     n.edges.each do |e|
       @cr.move_to n.x, n.y
       color = Cairo::Color.parse(Cairo::Color::BLACK)
@@ -114,4 +117,3 @@ window.add draw_window
 window.show_all
 
 Gtk.main
-
