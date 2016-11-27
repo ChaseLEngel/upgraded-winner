@@ -1,45 +1,71 @@
 #!/usr/bin/ruby
 require 'gtk3'
+require 'pp'
+
+WIN_X = 1000
+WIN_Y = 1000
+
+nodes = []
+
+positions = [
+  {x: 30, y: 30},
+  {x: WIN_X-30, y: 30},
+  {x: 30, y: 80},
+  {x: 120, y: 100},
+  {x: 160, y: 100},
+  {x: 200, y: 160},
+]
 
 class Node
-  attr_accessor :x, :y
-  def initialize(cairo, id, x, y)
+  attr_accessor :color, :id, :edges, :x, :y
+  def initialize(id, x, y)
+    @id = id 
+    @edges = []
     @x = x
     @y = y
-    @id = id
-    drawNode(cairo)
-    setId(cairo)
   end
 
-  def link(cairo, node)
-    cairo.move_to @x, @y
-    cairo.line_to node.x, node.y
-    cairo.stroke
+  def addEdge(node)
+    @edges << node
+  end
+end
+
+ntag, etag, rtag = false
+node_count = 0
+File.foreach(ARGV.first) do |line|
+  if line.match('#nodes')
+    ntag = true
+  elsif line.match('#edges')
+    ntag = false
+    etag = true
+  elsif line.match('#results')
+    ntag = false
+    etag = false
+    rtag = true
+  elsif line.match('Rejected')
+    puts 'Rejected'
+    exit
   end
 
-  def setColor(cairo, color)
-    cairo.move_to @x, @y
-    cairo.set_source_rgb(0.3, 0.2, 0.6)
-    cairo.fill
+  if ntag
+    next if line == "#nodes\n"
+    #nodes << Node.new(line.chomp, positions[node_count][:x], positions[node_count][:y])
+    nodes << Node.new(line.chomp, rand(WIN_X-30), rand(WIN_Y-30))
+    node_count = node_count+1
+  elsif etag
+    next if line == "#edges\n"
+    from = line.split[0]
+    to = line.split[1]
+    from_node = nodes[nodes.index { |n| n.id == from }]
+    to_node = nodes[nodes.index { |n| n.id == to }]
+    from_node.addEdge(to_node)
+  elsif rtag
+    next if line == "#results\n"
+    id = line.split[0]
+    color = line.split[1]
+    node = nodes[nodes.index { |n| n.id == id }]
+    node.color = color
   end
-
-  private
-
-  def drawNode(cairo)
-    radius = 20
-    cairo.set_source_rgb(0.1, 0.1, 0.2)
-    # Draw a circle
-    cairo.arc @x, @y, radius, 0, 2*Math::PI
-    # Draw outline of circle
-    cairo.stroke
-  end
-
-  def setId(cairo)
-    cairo.move_to @x, @y
-    cairo.show_text @id
-    cairo.stroke
-  end
-
 end
 
 # Create new Gtk window instance
@@ -50,45 +76,42 @@ window.set_title 'Graph Coloring'
 # When window close button is clicked, exit program.
 window.signal_connect('destroy') { Gtk.main_quit }
 
-WIN_X = 500
-WIN_Y = 800
 window.set_default_size WIN_X, WIN_Y
 window.set_window_position :center
 
 # Create new drawing space.
 draw_window = Gtk::DrawingArea.new
 
-draw_window.queue_draw_area(0, 0, WIN_X, WIN_Y)
-positions = [
-  {x: 40, y: 40},
-  {x: 80, y: 80},
-  {x: 120, y: 80},
-]
-
-nodes = []
-
 # Listen for Gtk to call draw event.
 draw_window.signal_connect('draw') do 
   @cr = draw_window.window.create_cairo_context
   @cr.select_font_face "Purisa", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL
-  @cr.set_font_size 13 
+  @cr.set_font_size 15
 
   # Draw nodes and edges
-  nodes << Node.new(@cr, '0', positions[0][:x], positions[0][:y])
-  nodes << Node.new(@cr, '1', positions[1][:x], positions[1][:y])
-  true
+  nodes.each do |n|
+    color = Cairo::Color.parse(Object.const_get("Cairo::Color::#{n.color}"))
+    @cr.set_source_rgb(color.red, color.green, color.blue)
+    @cr.arc n.x, n.y, 20, 0, 2*Math::PI
+    @cr.fill
+    @cr.move_to n.x, n.y
+    color = Cairo::Color.parse(Cairo::Color::BLACK)
+    @cr.set_source_rgb(color.red, color.green, color.blue)
+    @cr.show_text n.id
+    @cr.stroke
+    n.edges.each do |e|
+      @cr.move_to n.x, n.y
+      color = Cairo::Color.parse(Cairo::Color::BLACK)
+      @cr.set_source_rgb(color.red, color.green, color.blue)
+      @cr.line_to e.x, e.y
+      @cr.stroke
+    end
+  end
 end
 
 window.add draw_window
 
-draw_window.add_tick_callback do |_, frame_clock|
-  # Update node colors
-  n = Node.new(@cr, '2', rand(WIN_X), rand(WIN_Y) )
-  n.setColor(@cr, :red)
-end
-
 window.show_all
-
 
 Gtk.main
 
