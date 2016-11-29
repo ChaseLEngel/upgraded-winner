@@ -1,17 +1,8 @@
 #!/usr/bin/ruby
 require 'gtk3'
 
-WIN_X = 700
-WIN_Y = 400
-
-positions = [
-  {x: 30, y: 30},
-  {x: WIN_X-30, y: 30},
-  {x: 30, y: 80},
-  {x: 120, y: 100},
-  {x: 160, y: 100},
-  {x: 200, y: 160},
-]
+WIN_X = 1000
+WIN_Y = 1000
 
 # Holds node information parsed from input file.
 class Node
@@ -68,52 +59,76 @@ end
 
 # Create new Gtk window instance
 window = Gtk::Window.new(:toplevel)
+window.set_default_size WIN_X, WIN_Y
+
+ENTER_KEY = 65293
+SPACE_KEY = 32
 
 window.set_title 'Graph Coloring'
 
 # When window close button is clicked, exit program.
 window.signal_connect('destroy') { Gtk.main_quit }
 
-window.set_default_size WIN_X, WIN_Y
 window.set_window_position :center
 
 # Create new drawing space.
-draw_window = Gtk::DrawingArea.new
+@draw_window = Gtk::DrawingArea.new
+@draw_window.set_size_request WIN_X, WIN_Y
 
-# Listen for Gtk to call draw event.
-draw_window.signal_connect('draw') do 
-  @cr = draw_window.window.create_cairo_context
+def encodeColor(color)
+  rgb = Cairo::Color.parse(Object.const_get("Cairo::Color::#{color}"))
+  return rgb.red, rgb.green, rgb.blue
+end
+
+def draw(nodes)
+  @cr = @draw_window.window.create_cairo_context
   @cr.select_font_face "Purisa", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL
   @cr.set_font_size 15
 
   # Draw nodes and edges
   nodes.each do |n|
     # Set circle color.
-    color = Cairo::Color.parse(Object.const_get("Cairo::Color::#{n.color}"))
-    @cr.set_source_rgb(color.red, color.green, color.blue)
+    @cr.set_source_rgb(encodeColor(n.color))
     # Draw circle
     @cr.arc n.x, n.y, 20, 0, 2*Math::PI
     # Color circle
     @cr.fill
     @cr.move_to n.x, n.y
-    color = Cairo::Color.parse(Cairo::Color::BLACK)
-    @cr.set_source_rgb(color.red, color.green, color.blue)
+    @cr.set_source_rgb(encodeColor('BLACK'))
     # Draw node id
     @cr.show_text n.id
     @cr.stroke
     # Draw lines to other nodes.
     n.edges.each do |e|
       @cr.move_to n.x, n.y
-      color = Cairo::Color.parse(Cairo::Color::BLACK)
-      @cr.set_source_rgb(color.red, color.green, color.blue)
+      @cr.set_source_rgb(encodeColor('BLACK'))
       @cr.line_to e.x, e.y
       @cr.stroke
     end
   end
 end
 
-window.add draw_window
+# Listen for Gtk to call draw event.
+@draw_window.signal_connect('draw') do 
+  draw(nodes)
+end
 
+window.signal_connect('key-press-event') do |_widget, event_key|
+  if event_key.keyval == SPACE_KEY
+    nodes.each do |n|
+      n.x = rand(WIN_X-30)
+      n.y = rand(WIN_Y-30)
+    end
+  elsif event_key.keyval == ENTER_KEY
+    # Next iteration
+  end
+  # Tell GTK that @draw_window needs to be redrawn.
+  @draw_window.queue_draw
+end
+
+window.add @draw_window
+
+# Show all widgets on window.
 window.show_all
 
 Gtk.main
