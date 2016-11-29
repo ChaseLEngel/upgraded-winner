@@ -23,9 +23,6 @@ module Input
         etag = false
         ctag = false
         rtag = true
-      elsif line.match('Rejected')
-        puts 'Rejected'
-        exit
       end
 
       if ntag
@@ -47,11 +44,7 @@ module Input
         color = 'WHITE' if color.nil?
         coloring << OpenStruct.new(node: node, color: color)
       elsif rtag
-        next if line == "#results\n"
-        #id = line.split[0]
-        #color = line.split[1]
-        #node = nodes[nodes.index { |n| n.id == id }]
-        #node.color = color
+        break
       end
     end
     return nodes, coloring

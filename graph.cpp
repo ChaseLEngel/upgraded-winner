@@ -61,6 +61,7 @@ void Graph::eval(){
     printAssignedColors();
   }
   else {
+    cout << "#results" << endl;
     cout << "Rejected" << endl;
   }
 }
