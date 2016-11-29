@@ -70,6 +70,7 @@ int main(int argv, char* argc[])
     myGraph.addEdge(from,to);
     ist.clear();
   }
+  cout << "#coloring" << endl;
 
   myGraph.eval();
 

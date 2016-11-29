@@ -9,6 +9,7 @@
 #include<vector>
 #include<string>
 #include<algorithm>
+#include<iostream>
 
 using std::string;
 using std::vector;

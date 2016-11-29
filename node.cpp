@@ -22,6 +22,7 @@ int Node::getId()
 
 void Node::setColor(string value)
 {
+  std::cout << m_id << " " << value << std::endl;
   m_curColor = value;
 }
 
