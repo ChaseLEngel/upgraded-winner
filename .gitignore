@@ -38,6 +38,11 @@ graphtest
 *.gcda
 *.gcno
 
+# Bundler #
+###############
+Gemfile.lock
+
+
 # I don't know #
 ################
 *.dSYM

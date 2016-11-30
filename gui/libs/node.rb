@@ -14,7 +14,7 @@ class Node
     # Set circle color.
     cr.set_source_rgb rgbEncode(@color)
     # Draw circle
-    cr.arc @x, @y, 30, 0, 2*Math::PI
+    cr.arc @x, @y, NODE_RADIUS, 0, 2*Math::PI
     # Color circle
     cr.fill
     cr.move_to @x, @y
