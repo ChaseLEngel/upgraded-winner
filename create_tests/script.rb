@@ -16,16 +16,20 @@ puts ""
 
 str = String.new
 nodes = String.new
+arr = (0..max_nodes-1).to_a
 (0...max_nodes).each do |i|
   str += i.to_s + " "
-  first_num = rand(0..max_nodes-1)
-  second_num = rand(0..max_nodes-1)
-  (first_num...second_num).each do |n|
-    if n == i
-    else
-      nodes += i.to_s  + " " + n.to_s + "\n"
-    end
+  rand_num = rand(0..max_nodes-1)
+  arr.sample(rand_num).each do |n|
+    nodes += i.to_s + " " + n.to_s + "\n" 
   end
+
+  #range = first_num..second_num
+  #(range.first).downto(range.last).each do |n|
+  #  if n != i
+  #    nodes += i.to_s  + " " + n.to_s + "\n"
+  #  end
+  #end
 end
 puts str
 puts nodes
