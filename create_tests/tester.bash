@@ -5,7 +5,7 @@ accept_count=0
 reject_count=0
 for i in {0..1000}
 do
-  ./script.rb 10 7 > out
+  ./script.rb 10 3 > out
   ./wumpus out > /dev/null
   if [ $? -eq 0 ]
   then

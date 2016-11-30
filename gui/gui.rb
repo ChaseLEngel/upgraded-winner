@@ -5,8 +5,8 @@ require 'gtk3'
 require_relative 'libs/node'
 require_relative 'libs/input'
 
-WIN_X = 2000
-WIN_Y = 1000
+WIN_X = 700
+WIN_Y = 400
 
 # Parse input file for nodes and what color nodes get set to.
 nodes, coloring = Input.parse(ARGV.first)
