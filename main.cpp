@@ -71,7 +71,6 @@ int main(int argv, char* argc[])
   }
 
   myGraph.eval();
-  myGraph.printAssignedColors();
 
   return 0;
 }
