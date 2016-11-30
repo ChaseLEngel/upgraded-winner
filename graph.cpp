@@ -62,6 +62,7 @@ void Graph::eval(){
   }
   else {
     cout << "Rejected" << endl;
+    exit(1);
   }
 }
 

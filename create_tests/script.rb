@@ -19,7 +19,7 @@ nodes = String.new
 arr = (0..max_nodes-1).to_a
 (0...max_nodes).each do |i|
   str += i.to_s + " "
-  rand_num = rand(0..max_nodes-1)
+  rand_num = rand(1..max_nodes-1)
   arr.sample(rand_num).each do |n|
     nodes += i.to_s + " " + n.to_s + "\n" 
   end
