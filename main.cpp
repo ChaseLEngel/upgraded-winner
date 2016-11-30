@@ -17,7 +17,6 @@ int main(int argv, char* argc[])
   }
 
   char* input_file = argc[1];
-  cout << "Hello wumpus ...  " << input_file << endl;
 
   ifstream inf;
   inf.open(input_file);
@@ -45,6 +44,7 @@ int main(int argv, char* argc[])
   ist.clear();
 
   /* Read second line, parse # of Nodes in graph */
+  cout << "#nodes" << endl;
   string value;
 
   getline(inf,line);
@@ -58,6 +58,7 @@ int main(int argv, char* argc[])
 
   /* Read the rest of input file, for the edges */ 
   
+  cout << "#edges" << endl;
   while(getline(inf, line))
   {
     int from, to;
