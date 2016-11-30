@@ -1,4 +1,5 @@
 #include "graph.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -103,12 +104,19 @@ void Graph::backTrack() {
   node->setColor("");
   string next_color = findNextColor(node->getCrossedOut());
   // Reject state
-  if(node->getId() == 0 && next_color == cur_color) {
-    m_reject = true;
-    return;
+  if(node->getId() == 0) {
+    auto iter = find(m_colors.begin(), m_colors.end(), cur_color)+1;
+    if(iter == m_colors.end()) {
+      m_reject = true;
+      return;
+    }
+    else {
+      node->setColor(*iter);
+      m_backtrack.push(node);
+    }
   }
   // Node doesn't have any other available colors. Need to backtrack again.
-  if(next_color == "" || next_color == cur_color) {
+  else if(next_color == "" || next_color == cur_color) {
     backTrack();
   }
   else {
