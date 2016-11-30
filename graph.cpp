@@ -9,12 +9,14 @@ Graph::Graph(){
 }
 
 void Graph::addNode(int id){
+  cout << id << endl;
   Node* tmp = new Node(id);
   assert(tmp != NULL);
   m_nodes.insert(make_pair(id,tmp));
 }
 
 void Graph::addEdge(int from, int to){
+  cout << from << " " << to << endl;
   Node* fromNode = m_nodes[from];
   assert(fromNode != NULL);
   Node* toNode= m_nodes[to];
@@ -57,11 +59,11 @@ void Graph::eval(){
     m_accept = acceptable();
   }
   if(m_accept) {
-    cout << "Accepted" << endl;
     printAssignedColors();
   }
   else {
     cout << "Rejected" << endl;
+    exit(1);
   }
 }
 
@@ -153,8 +155,9 @@ string Graph::findNextColor(vector<string> usedColors){
 }
 
 void Graph::printAssignedColors() {
+  cout << "#results" << endl;
   for(auto node : m_nodes) {
-    cout << "Node " << node.second->getId() << ": " << node.second->getCurColor() << endl;
+    cout << node.second->getId() << " " << node.second->getCurColor() << endl;
   }
 }
 

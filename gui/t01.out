@@ -1,0 +1,24 @@
+#nodes
+0
+1
+2
+3
+4
+5
+#edges
+0 1
+0 2
+0 3
+0 4
+0 5
+1 2
+2 3
+3 4
+4 5
+#results
+0 ALICE_BLUE
+1 AMBER
+2 VIOLET
+3 AMBER
+4 VIOLET
+5 AMBER
