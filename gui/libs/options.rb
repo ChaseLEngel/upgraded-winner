@@ -17,6 +17,14 @@ module Options
       opts.on("-h=", "--height=", "Size of window height") do |h|
         options[:height] = h.to_i
       end
+
+      opts.on("-r=", "--radius=", "Radius of nodes") do |r|
+        options[:radius] = r.to_i
+      end
+
+      opts.on("-s=", "--size=", "Size of font") do |s|
+        options[:font_size] = s.to_i
+      end
     end.parse!
     options
   end

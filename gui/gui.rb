@@ -10,6 +10,8 @@ options = Options.parse
 
 WIN_X = options[:width] || 700
 WIN_Y = options[:height] || 400
+NODE_RADIUS = options[:radius] || 15
+FONT_SIZE = options[:font_size] || 15
 
 # Parse input file for nodes and what color nodes get set to.
 nodes, coloring = Input.parse options[:file]
@@ -37,7 +39,7 @@ R_KEY = 114
   @cr = @draw_window.window.create_cairo_context
   @cr.select_font_face "Purisa", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL
   @cr.set_line_width 1
-  @cr.set_font_size 20
+  @cr.set_font_size FONT_SIZE
 
   # Tell all nodes to draw.
   nodes.each { |n| n.draw @cr }
