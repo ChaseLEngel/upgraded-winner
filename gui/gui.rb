@@ -4,12 +4,15 @@ require 'gtk3'
 
 require_relative 'libs/node'
 require_relative 'libs/input'
+require_relative 'libs/options'
 
-WIN_X = 700
-WIN_Y = 400
+options = Options.parse
+
+WIN_X = options[:width] || 700
+WIN_Y = options[:height] || 400
 
 # Parse input file for nodes and what color nodes get set to.
-nodes, coloring = Input.parse(ARGV.first)
+nodes, coloring = Input.parse options[:file]
 
 # Create new Gtk window instance
 window = Gtk::Window.new(:toplevel)
@@ -22,49 +25,23 @@ window.set_window_position :center
 # Define key maps.
 ENTER_KEY = 65293
 SPACE_KEY = 32
+R_KEY = 114
 
 # Create new drawing space.
 @draw_window = Gtk::DrawingArea.new
 # Set draw area to entire window.
 @draw_window.set_size_request WIN_X, WIN_Y
 
-# Takes string color and converts it to red, green, blue values.
-def encodeColor(color)
-  rgb = Cairo::Color.parse(Object.const_get("Cairo::Color::#{color}"))
-  return rgb.red, rgb.green, rgb.blue
-end
-
-# Draws everything.
-def draw(nodes)
+# Listen for Gtk to call draw event.
+@draw_window.signal_connect('draw') do
   @cr = @draw_window.window.create_cairo_context
   @cr.select_font_face "Purisa", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL
-  @cr.set_font_size 15
+  @cr.set_line_width 1
+  @cr.set_font_size 20
 
-  # Draw nodes and edges
-  nodes.each do |n|
-    # Set circle color.
-    @cr.set_source_rgb(encodeColor(n.color))
-    # Draw circle
-    @cr.arc n.x, n.y, 20, 0, 2*Math::PI
-    # Color circle
-    @cr.fill
-    @cr.move_to n.x, n.y
-    @cr.set_source_rgb(encodeColor('BLACK'))
-    # Draw node id
-    @cr.show_text n.id
-    @cr.stroke
-    # Draw lines to other nodes.
-    n.edges.each do |e|
-      @cr.move_to n.x, n.y
-      @cr.set_source_rgb(encodeColor('BLACK'))
-      @cr.line_to e.x, e.y
-      @cr.stroke
-    end
-  end
+  # Tell all nodes to draw.
+  nodes.each { |n| n.draw @cr }
 end
-
-# Listen for Gtk to call draw event.
-@draw_window.signal_connect('draw') { draw nodes }
 
 # Updates nodes and calls draw event.
 window.signal_connect('key-press-event') do |_widget, event_key|
@@ -82,6 +59,9 @@ window.signal_connect('key-press-event') do |_widget, event_key|
     struct.node.color = struct.color
     # Resize stack
     coloring = coloring.drop(1)
+  # Reset the graph.
+  elsif event_key.keyval == R_KEY
+    nodes, coloring = Input.parse options[:file]
   end
   # Tell GTK that @draw_window needs to be redrawn.
   @draw_window.queue_draw
